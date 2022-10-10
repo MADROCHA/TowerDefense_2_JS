@@ -12,7 +12,7 @@
             } */
             this.size = 64
             this.color = 'rgba(255, 255, 255, 0.1)'
-            this.onHoverColor = 'pink'
+            this.onHoverColor = 'rgba(0, 0, 0, 0.3)'
             this.occupied = false
 
         }

@@ -6,7 +6,7 @@ canvas.height = 768
 
 c.fillStyle = 'white'
 c.fillRect(0,0, canvas.width,canvas.height)
-
+let debugDev = false
 //parse data placement.js
 const placementTilesData2D = []
 for(let i = 0; i< placementTilesData.length; i+=20){
@@ -47,6 +47,15 @@ for (let i = 1; i < 10; i++){
         position:{x:waypoints[0].x -xEnemyOffset,y:waypoints[0].y}
     }))
 } */
+// floating messages//
+const floatingMessages = []
+class floatingMessage{
+    constructor(value){
+        this.value = value
+    }
+}
+// floating messages//
+
 const enemies = []
     function spawnEnemies(
         spawnCount,
@@ -65,7 +74,7 @@ const buildings = []
 let activeTile = undefined
 let enemyCount = 10
 let hearts = 10
-let coins = 1000
+let coins = 100
 const explosions = []
 spawnEnemies(enemyCount)
 function animate(){
@@ -83,10 +92,10 @@ function animate(){
             document.querySelector('#heartsNum').innerHTML = hearts
 
             
-            console.log(hearts)
+            //console.log(hearts)
             if(hearts ===0){
                 cancelAnimationFrame(animationId)
-                console.log('hearts 0')
+                //console.log('hearts 0')
                 document.querySelector('#gameOverText').style.display = 'flex'
             }
         }
@@ -147,7 +156,7 @@ function animate(){
                     })
 
                     if(enemyIndex > -1){
-                        coins += 25
+                        coins += 20
                         document.querySelector('#coinsNum').innerHTML = coins
                         enemies.splice(enemyIndex,1)
                     }
@@ -171,7 +180,7 @@ function animate(){
                     },
                 }))
                 //console.log(projectile.enemy.health)
-                console.log(projectile.enemy.health)
+                //console.log(projectile.enemy.health)
             }
             //console.log(distance)
         }
@@ -205,7 +214,7 @@ canvas.addEventListener('click', (e)=>{
             return a.position.y - b.position.y
         })
     }
-    console.log(buildings)
+    //console.log(buildings)
 })
 //
 window.addEventListener('mousemove', (e)=>{
@@ -226,6 +235,19 @@ window.addEventListener('mousemove', (e)=>{
             }
     }
     //console.log(activeTile)
+})
+
+/* const keys ={
+    º:{
+        pressed: false
+    } 
+}*/
+window.addEventListener('keydown',(e)=>{
+    switch (e.key){
+        case'º':
+        debugDev = !debugDev
+        break
+    }
 })
 
 

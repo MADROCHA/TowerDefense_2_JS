@@ -34,10 +34,12 @@ class Enemy extends Sprite {
     draw(){
         super.draw()
         //c.fillRect(this.position.x,this.position.y,this.width,this.height)
-        c.beginPath()
-        c.arc(this.center.x,this.center.y, this.radius, 0, Math.PI*2)
-        c.strokeStyle = 'purple'
-        c.stroke()
+        if(debugDev){
+            c.beginPath()
+            c.arc(this.center.x,this.center.y, this.radius, 0, Math.PI*2)
+            c.strokeStyle = 'purple'
+            c.stroke()
+        }
 
         // healthBar
         c.fillStyle = 'red'

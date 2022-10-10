@@ -18,18 +18,18 @@ class Projectile extends Sprite {
         this.enemy = enemy
         this.radius = 10
     }
-    /* draw(){
-
-        c.drawImage(
+    draw(){
+        super.draw()
+        /* c.drawImage(
             this.image, 
             this.position.x,
-            this.position.y)
+            this.position.y) */
 
         c.beginPath()
         c.arc(this.position.x,this.position.y, this.radius, 0, Math.PI*2)
-        c.fillStyle = 'red'
+        c.fillStyle = 'rgba(255, 255, 255, 0.5)'
         c.fill()
-    } */
+    }
     update(){
         this.draw()
         const angle = Math.atan2(

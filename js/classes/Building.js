@@ -14,7 +14,7 @@ class Building extends Sprite {
         })
         //this.position = position
         this.width = 64 * 2
-        this.height = 64
+        this.height = 64 
         this.center = {
             x: this.position.x +this.width * 0.5,
             y: this.position.y + this.height * 0.5
@@ -34,12 +34,12 @@ class Building extends Sprite {
     }
     draw(){
     super.draw()
+    if(debugDev){
+
         // tower box
         c.strokeStyle='blue'
-        c.strokeRect(this.position.x,this.position.y,this.width,64)
-        // tower box
-        
-        // projectile arc
+        c.strokeRect(this.position.x,this.position.y,this.width,this.height)
+        // projectileRadiusRangeAttack.arc
         c.beginPath()
         c.arc(
             this.center.x,
@@ -52,7 +52,26 @@ class Building extends Sprite {
         //c.fill()
         c.strokeStyle='rgba(0,0,255,1)'
         c.stroke()
-        // projectile arc
+    }
+    if(
+        mouse.x > this.position.x
+        && mouse.x < this.position.x + this.width
+        && mouse.y > this.position.y
+        && mouse.y < this.position.y + this.height
+        ){
+
+            c.beginPath()
+            c.arc(
+                this.center.x,
+                this.center.y,
+                this.projectileRangeRadius,
+                0,
+                Math.PI * 2
+                )
+                c.fillStyle='rgba(0,0,255,0.099)'
+                c.fill()
+            }
+        
     }
     update(){
         this.draw()
@@ -61,6 +80,7 @@ class Building extends Sprite {
             ){
 
             super.update()
+        
         }
         if(this.target 
             &&  this.frames.current === 6

@@ -98,25 +98,30 @@ const enemies = []
         spawnCount,
     ){
         for (let i = 1; i < spawnCount +1; i++){
+            // added
+            let waveSpeedIncrease = spawnCount * 0.25
+            //
             const xEnemyOffset = i * 250
             enemies.push(new Enemy({
-                position:{x:waypoints[0].x -xEnemyOffset,y:waypoints[0].y}
+                position:{x:waypoints[0].x -xEnemyOffset,y:waypoints[0].y},
+                // added constructor _const speed
+                speed: waveSpeedIncrease
+                //
             })
-        )
+            )
+        }
     }
-}
 //const enemy1 = new Enemy({position:{x:waypoints[0].x,y:waypoints[0].y}})
 //const enemy2 = new Enemy({position:{x:waypoints[0].x -enemiesGap,y:waypoints[0].y}})
 const buildings = []
 let activeTile = undefined
 let hearts = 10
-let playerCoins = 120
+let playerCoins = 70
 let buildCost = 55
 let projectileDamage = 20
-
-let enemyCount = 10
-let enemyDrop = 15
-let enemyHpDamage = 2
+let enemyCount = 3
+let enemyDrop = 7
+let enemyHpDamage = 1
 const explosions = []
 spawnEnemies(enemyCount)
 function animate(){
@@ -162,7 +167,7 @@ function animate(){
     }
 
     if ( enemies.length ===0){
-        enemyCount += 2
+        enemyCount += 3
         spawnEnemies(enemyCount)
     }
     /* enemies.forEach(enemy =>{

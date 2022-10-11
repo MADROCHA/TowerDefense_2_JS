@@ -50,8 +50,45 @@ for (let i = 1; i < 10; i++){
 // floating messages//
 const floatingMessages = []
 class floatingMessage{
-    constructor(value){
+    constructor(value, x,y,size,color,velocity){
         this.value = value
+        this.x = x
+        this.y = y
+        this.size = size
+        this.lifeSpan = 0
+        this.color = color
+        this.opacity = 1
+        this.velocity = velocity
+
+
+    }
+    draw(){
+        c.globalAlpha = this.opacity
+        c.fillStyle = this.color
+        c.font = this.size +'px Changa One' 
+        c.fillText(
+            this.value,
+            this.x,
+            this.y,
+        )
+        c.globalAlpha = 1
+    }
+    update(){
+        //this.y -= 0.3
+        this.y += this.velocity
+        this.lifeSpan += 1
+        if(this.opacity > 0.01) this.opacity -= 0.01
+    }
+    
+}
+function handleFloatingMessages(){
+    for(let i = 0; i < floatingMessages.length; i++){
+        floatingMessages[i].update()
+        floatingMessages[i].draw()
+        if(floatingMessages[i].lifeSpan >= 50){
+            floatingMessages.splice(i,1)
+            i--
+        }
     }
 }
 // floating messages//
@@ -74,7 +111,9 @@ const buildings = []
 let activeTile = undefined
 let enemyCount = 10
 let hearts = 10
-let coins = 100
+let playerCoins = 100
+let enemyDrop = 10
+let projectileDamage = 100
 const explosions = []
 spawnEnemies(enemyCount)
 function animate(){
@@ -149,21 +188,36 @@ function animate(){
             // projectile hit enemy
             if(distance < projectile.enemy.radius + projectile.radius){
                 // enemy health and projectile removal
-                projectile.enemy.health -=20
+                projectile.enemy.health -= projectileDamage
                 if(projectile.enemy.health <= 0){
                     const enemyIndex = enemies.findIndex((enemy)=>{
                         return projectile.enemy === enemy
                     })
 
                     if(enemyIndex > -1){
-                        coins += 20
-                        document.querySelector('#coinsNum').innerHTML = coins
+                        playerCoins += 20
+                        floatingMessages.push(new floatingMessage(
+                            '+ ' + enemyDrop, 
+                            enemies[i].center.x , 
+                            enemies[i].center.y , 
+                            25,
+                            '#f3c70d',
+                            -0.3
+                        ))
+                        floatingMessages.push(new floatingMessage(
+                            '+ ' + enemyDrop, 
+                            1100 , 
+                            70 , 
+                            25,
+                            '#eeb501',
+                            -0.3
+                        ))
                         enemies.splice(enemyIndex,1)
+                        document.querySelector('#coinsNum').innerHTML = playerCoins
                     }
                     // amount of enemies
-            
-
                 }
+
                 building.projectiles.splice(i, 1)
                 explosions.push(new Sprite({
                     position:{
@@ -187,6 +241,7 @@ function animate(){
     })
     //enemy1.update()
     //enemy2.update()
+    handleFloatingMessages()
 }
 
 const mouse = {
@@ -194,25 +249,49 @@ const mouse = {
     y:undefined
 }
 
+let buildCost = 55
 //
 canvas.addEventListener('click', (e)=>{
     if(
         activeTile  
         && !activeTile.isOccupied
-        && coins - 50 >= 0
+        && playerCoins -  buildCost >= 0
         ){
-        coins -=50
-        document.querySelector('#coinsNum').innerHTML = coins
+            //
+            floatingMessages.push(new floatingMessage(
+                '- ' + buildCost, 
+                mouse.x, 
+                mouse.y, 
+                40,
+                '#f3c70d',
+                -0.3
+            ))
+            //
+        playerCoins -= buildCost
+        document.querySelector('#coinsNum').innerHTML = playerCoins
         buildings.push(new Building({
             position:{
                 x:activeTile.position.x,
                 y:activeTile.position.y
-            }
+            },
+            
         }))
         activeTile.isOccupied = true
         buildings.sort((a,b) =>{
             return a.position.y - b.position.y
         })
+    } else if(activeTile  
+        && !activeTile.isOccupied
+        && playerCoins -  buildCost < 0) {
+        floatingMessages.push(new floatingMessage(
+            'Need More Coins', 
+            mouse.x, 
+            mouse.y, 
+            35,
+            '#e9ad03',
+            0.07
+            //'cyan'
+        ))
     }
     //console.log(buildings)
 })

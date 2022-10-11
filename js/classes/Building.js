@@ -1,5 +1,5 @@
 class Building extends Sprite {
-    constructor({position = {x:0, y:0} }){
+    constructor({position = {x:0, y:0}, }){
         super({
             position,
             imgSrc: './img/tower.png',
@@ -30,7 +30,8 @@ class Building extends Sprite {
         ]
         this.projectileRangeRadius = 250
         this.target 
-        
+        //
+        this.buildCost = 50
     }
     draw(){
     super.draw()

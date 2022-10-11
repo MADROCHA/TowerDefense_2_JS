@@ -109,11 +109,14 @@ const enemies = []
 //const enemy2 = new Enemy({position:{x:waypoints[0].x -enemiesGap,y:waypoints[0].y}})
 const buildings = []
 let activeTile = undefined
-let enemyCount = 10
 let hearts = 10
-let playerCoins = 100
-let enemyDrop = 10
-let projectileDamage = 100
+let playerCoins = 120
+let buildCost = 55
+let projectileDamage = 20
+
+let enemyCount = 10
+let enemyDrop = 15
+let enemyHpDamage = 2
 const explosions = []
 spawnEnemies(enemyCount)
 function animate(){
@@ -127,7 +130,15 @@ function animate(){
         if(enemy.position.x > canvas.width){
             //console.log('heart-1')
             enemies.splice(i,1)
-            hearts-=1
+            hearts -= enemyHpDamage
+            floatingMessages.push(new floatingMessage(
+                '- ' + enemyHpDamage, 
+                1200 , 
+                70 , 
+                35,
+                '#E70000',
+                0.3
+            ))
             document.querySelector('#heartsNum').innerHTML = hearts
 
             
@@ -195,7 +206,8 @@ function animate(){
                     })
 
                     if(enemyIndex > -1){
-                        playerCoins += 20
+                        playerCoins += enemyDrop
+                        // coins earned from enemy
                         floatingMessages.push(new floatingMessage(
                             '+ ' + enemyDrop, 
                             enemies[i].center.x , 
@@ -204,6 +216,7 @@ function animate(){
                             '#f3c70d',
                             -0.3
                         ))
+                        // coins earned from enemy
                         floatingMessages.push(new floatingMessage(
                             '+ ' + enemyDrop, 
                             1100 , 
@@ -249,7 +262,6 @@ const mouse = {
     y:undefined
 }
 
-let buildCost = 55
 //
 canvas.addEventListener('click', (e)=>{
     if(
